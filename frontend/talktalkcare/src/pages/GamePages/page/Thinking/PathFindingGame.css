@@ -1,0 +1,143 @@
+.pathfinding-game {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.game-grid {
+  display: inline-block;
+  background-color: #f5ffea;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.grid-row {
+  display: flex;
+}
+
+.grid-cell {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #ddd;
+  margin: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.grid-cell.active {
+  background-color: #e3f2fd;
+}
+
+.robot {
+  font-size: 2em;
+  animation: bounce 0.5s ease infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
+}
+
+.square-buttons-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  width: fit-content;
+  border-radius: 8px;
+}
+
+.buttons-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.square-button {
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #c8e6c9;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+}
+
+.square-button:hover:not(:disabled) {
+  background-color: #9bbd9c;
+}
+
+.square-button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.square-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 각 방향 버튼별 색상 */
+.up-button {
+  color: #555555;
+}
+
+.left-button {
+  color: #555555;
+}
+
+.down-button {
+  color: #555555;
+}
+
+.right-button {
+  color: #555555;
+}
+
+/* 화살표 이미지 2와 같은 레이아웃을 위한 추가 스타일 */
+.top-row {
+  margin-bottom: 5px;
+}
+
+.bottom-row {
+  margin-top: 5px;
+}
+
+.square-button.active-button {
+  transform: scale(0.95);
+  background-color: #9bbd9c;
+  color: white;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.8);
+  transition: all 0.1s ease;
+}
+
+/* 버튼 기본 스타일에 transition 추가하여 부드러운 효과 */
+.square-button {
+  transition: all 0.2s ease;
+}
+
+/* 마우스로 클릭할 때 활성화 효과 */
+.square-button:active:not(:disabled) {
+  transform: scale(0.95);
+  background-color: #4a90e2;
+  color: white;
+}
+
+.center-cell {
+  background-color: rgba(144, 238, 144, 0.5); /* 연한 하늘색 배경 */
+}
+
+.grid-cell.active.center-cell {
+  background-color: rgba(144, 238, 144, 0.5); /* active 상태일 때 색상 유지 */
+}

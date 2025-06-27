@@ -1,0 +1,45 @@
+.pattern-game {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.sequence-display {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.number-box {
+  width: 80px;
+  height: 80px;
+  background-color: #c8e6c9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.input-box {
+  padding: 10px;
+  font-size: 1.2em;
+  width: auto;
+  border: 2px solid #c8e6c9;
+  border-radius: 5px;
+}
+
+.final-score {
+  margin-top: 20px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #4a148c;
+}
+
+.timer {
+  color: #d32f2f;
+} 

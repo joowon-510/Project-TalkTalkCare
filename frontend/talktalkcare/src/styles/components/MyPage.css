@@ -1,0 +1,214 @@
+/* MyPage.css */
+.my-page-container {
+  width: 100%; 
+  padding: 1.5rem 3rem; 
+  max-width: 800px;
+  min-height: 500px;
+  margin: 0 auto;
+  margin-top: 50px;
+  background-color: #F5FFEA;
+  border-radius: 1rem;
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* 프로필 이미지 컨테이너 추가 */
+.profile-image-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;  /* 원형으로 변경 */
+  object-fit: cover;   /* 이미지 비율 유지 */
+  background-color: #c8e6c9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 나머지 스타일은 동일하게 유지 */
+.profile-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: #c8e6c9;
+  border-radius: 15px;
+  padding: 5px 15px;
+}
+
+.profile-title:hover {
+  background-color: #9fb99f;
+}
+
+.analysis-tabs {
+  display: flex;
+  gap: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.tab-button {
+  flex: 0.5;
+  padding: 1rem;
+  border: none;
+  font-size: 1.5rem;  /* 버튼 텍스트 크기 키움 */
+  background-color: #c8e6c9;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tab-button.active {
+  background-color: #9fb99f;
+  color: white;
+}
+
+.analysis-content {
+  position: absolute;
+  padding: 2rem;
+  background-color: #9fb99f;
+  border-radius: 0.5rem;
+  position: relative;
+  margin: 20px 0px 10px;
+  z-index: 2;  
+}
+
+.game-analysis {
+  background-color: #F5FFEA;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.score-name {
+  padding-top: 20px;
+  font-size: 30px;
+}
+
+.test-analysis {
+  width: 100%;
+}
+
+.test-tabs {
+  position: absolute;
+  left: 0;
+  display: flex;
+  gap: 0;
+  margin: 0;
+}
+
+.small-test-tabs {
+  bottom: calc(100% - 5px);  /* -1px로 살짝 겹치게 조정 */
+  display: flex;
+  gap: 0;
+  margin-top: 10px;
+  margin: 0;
+}
+
+.test-tab-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #F5FFEA;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-bottom: none;  /* 하단 테두리 제거 */
+}
+
+
+.test-tab-button:first-child {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.test-tab-button:last-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0.5rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.test-tab-button.active {
+  background-color: #c8e6c9;
+  position: relative;
+  z-index: 1;  /* 탭을 컨텐츠 위로 올림 */
+}
+
+.test-content {
+  padding: 1rem;
+  background-color: #c8e6c9;
+}
+
+.test-placeholder {
+  width: 100%;
+  height: 200px;
+  border: 2px dashed #9fb99f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+}
+
+.pentagon-graph-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
+}
+
+.pentagon-graph {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* hover 효과 추가 */
+.profile-image-container:hover .camera-icon {
+  background-color: #9FE895;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%; /* 전체 너비 차지 */
+  text-align: center;
+}
+
+.loading-container svg {
+  margin-bottom: 10px;
+  color: #4CAF50;
+  width: 48px;
+  height: 48px;
+  /* 명시적 가운데 정렬 추가 */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

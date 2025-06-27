@@ -1,0 +1,183 @@
+/* 게임 페이지 전체 레이아웃 */
+.game-page {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #c8e6c9;
+  border-radius: 20px;
+}
+
+/* 게임 상단 헤더 영역 */
+.small-game-header {
+  background-color: #c8e6c9;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 0;
+}
+
+.time-display {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+/* 시간 진행바 관련 스타일 */
+.time-progress-container {
+  width: 100%;
+  height: 15px;
+  background-color: #f5ffea;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.time-progress-bar {
+  height: 100%;
+  background-color: #9bbd9c;
+  transition: width 1s linear;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 게임 컨트롤 버튼 */
+.game-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.game-control-button {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 5px 10px;
+  transition: all 0.3s ease;
+}
+
+.game-control-button.restart {
+  background-color: #f5ffea;
+}
+
+.game-control-button.exit {
+  background-color: rgb(255, 125, 125);
+}
+
+.game-control-button:hover {
+  opacity: 0.9;
+  background-color: #9bbd9c;
+  color: #000;
+}
+
+/* 게임 메인 콘텐츠 영역 */
+.game-content {
+  display: flex;
+  justify-content: center;  /* 이 부분이 가로 중앙 정렬을 만듦 */
+  align-items: center;      /* 이 부분이 세로 중앙 정렬을 만듦 */
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  height: auto;
+}
+
+
+.game-content > div {
+  max-width: 90%;
+  max-height: 90%;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* 여기 밑으로 각 게임마다 세팅 겹치는거 하나하나 세팅 중 */
+/* PathFindingGame 예외 처리 추가 */
+.game-content > div .controls {
+  flex-direction: row !important;  /* controls는 무조건 가로 배치 */
+}
+
+/* SequenceMemoryGame 예외 처리 추가 */
+.game-content > div .color-grid {
+  flex-direction: row !important;
+}
+
+/* PatternGame 예외 처리 추가 */
+.game-content > div .sequence-display, .game-content > div .input-section {
+  flex-direction: row !important;
+}
+
+/* ColorWordGame 예외 처리 추가 */
+.game-content > div .color-choices {
+  flex-direction: row !important;
+}
+
+.instructions {
+  background-color: #c8e6c9;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  margin: 20px 0px;
+}
+
+.instructions-button {
+  background-color: #f5ffea;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  font-size: xx-large;
+}
+
+.instructions-button:hover {
+  background-color: #9bbd9c;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.instructions-title {
+  font-size: xx-large;
+  padding-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.instructions-content {
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 반응형 디자인 */
+@media (max-height: 800px) {
+  .game-page {
+    padding: 10px;
+  }
+
+  .game-content {
+    padding: 15px;
+  }
+
+  .instructions {
+    padding: 30px;
+    font-size: 1.2em;
+  }
+} 

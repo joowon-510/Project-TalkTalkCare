@@ -1,0 +1,268 @@
+image: docker:latest
+
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_PRIVILEGED: "true"
+
+services:
+  - name: docker:dind
+    alias: docker
+    entrypoint: ["dockerd-entrypoint.sh"]
+    command: 
+      - "--tls=false"
+      - "--host=tcp://0.0.0.0:2375"
+
+before_script:
+  - apk add --no-cache docker-compose
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - |
+    echo "Configuring docker..."
+    until docker info; do
+      sleep 1
+    done
+  - docker network create cicd_network || true
+
+build-backend:
+  stage: build
+  script:
+    - cd backend
+    - docker build -t eoslovy/talktalkcare-backend:latest .
+    - docker push eoslovy/talktalkcare-backend:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+      changes:
+        - backend/**
+        - .gitlab-ci.yml
+      when: always
+  variables:
+    DOCKER_PRIVILEGED: "true"
+
+build-frontend:
+  stage: build
+  script:
+    - cd frontend && docker build --build-arg VITE_API_BASE_URL=${VITE_API_BASE_URL} --build-arg VITE_API_WS_URL=${VITE_API_WS_URL} --build-arg VITE_AWS_ACCESS_KEY_ID=${VITE_AWS_ACCESS_KEY_ID} --build-arg VITE_AWS_SECRET_ACCESS_KEY=${VITE_AWS_SECRET_ACCESS_KEY} --build-arg VITE_AWS_REGION=${VITE_AWS_REGION} -t eoslovy/talktalkcare-nginx:latest .
+    - docker push eoslovy/talktalkcare-nginx:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+      changes:
+        - frontend/**
+        - nginx.conf
+        - .gitlab-ci.yml
+      when: always
+  variables:
+    DOCKER_PRIVILEGED: "true"
+
+deploy-backend:
+  stage: deploy
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | base64 -d | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    # `.env` 파일을 생성하여 EC2로 전송
+    - |
+      cat << EOF > .env
+      SPRING_APPLICATION_NAME=${SPRING_APPLICATION_NAME}
+      DB_DRIVER=${DB_DRIVER}
+      DB_URL=${DB_URL}
+      DB_USERNAME=${DB_USERNAME}
+      DB_PASSWORD=${DB_PASSWORD}
+
+      MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE=${MYSQL_DATABASE}
+      MYSQL_USER=${DB_USERNAME}
+      MYSQL_PASSWORD=${DB_PASSWORD}
+
+      JPA_SHOW_SQL=${JPA_SHOW_SQL}
+      JPA_DDL_AUTO=${JPA_DDL_AUTO}
+      JPA_FORMAT_SQL=${JPA_FORMAT_SQL}
+      JPA_DIALECT=${JPA_DIALECT}
+
+      LOG_LEVEL_SQL=${LOG_LEVEL_SQL}
+      LOG_LEVEL_TYPE=${LOG_LEVEL_TYPE}
+
+      REDIS_HOST=${REDIS_HOST}
+      REDIS_PORT=${REDIS_PORT}
+
+      DOMAIN_OR_PUBLIC_IP=${DOMAIN_OR_PUBLIC_IP}
+      OPENVIDU_URL=${OPENVIDU_URL}
+      OPENVIDU_SECRET=${OPENVIDU_SECRET}
+      CERTIFICATE_TYPE=${CERTIFICATE_TYPE}
+      HTTPS_PORT=${HTTPS_PORT}
+      KMS_URIS=${KMS_URIS}
+
+      # AWS 관련 설정
+      AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      AWS_REGION=${AWS_REGION}
+      AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
+
+      # SMS 관련 설정
+      SMS_API_KEY=${SMS_API_KEY}
+      SMS_API_SECRET=${SMS_API_SECRET}
+      SMS_SENDER=${SMS_SENDER}
+
+      # CONTEXT PATH
+      CONTEXT_PATH=${CONTEXT_PATH}
+
+      # Spring Datasource 설정
+      SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+
+      # Docker 관련 설정
+      DOCKER_USERNAME=${DOCKER_USERNAME}
+      DOCKER_PASSWORD=${DOCKER_PASSWORD}
+
+      # SSH 관련 설정
+      SSH_HOST=${SSH_HOST}
+      SSH_USER=${SSH_USER}
+      SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
+
+      # OpenAI API 관련 설정
+      OPENAI_API_URL=${OPENAI_API_URL}
+      OPENAI_API_KEY=${OPENAI_API_KEY}
+
+      # 프론트엔드 환경변수
+      VITE_API_BASE_URL=${VITE_API_BASE_URL}
+      VITE_API_WS_URL=${VITE_API_WS_URL}
+      VITE_AWS_ACCESS_KEY_ID=${VITE_AWS_ACCESS_KEY_ID}
+      VITE_AWS_SECRET_ACCESS_KEY=${VITE_AWS_SECRET_ACCESS_KEY}
+      VITE_AWS_REGION=${VITE_AWS_REGION}
+
+      # Kurento Media Server 설정
+      KMS_STUN_IP=${KMS_STUN_IP}
+      KMS_STUN_PORT=${KMS_STUN_PORT}
+      KMS_TURN_URL=${KMS_TURN_URL}
+      EOF
+
+    - echo "Transferring files to EC2..."
+    - scp .env docker-compose.yml $SSH_USER@$SSH_HOST:~/
+    - |
+      ssh $SSH_USER@$SSH_HOST "
+        echo 'Checking .env file status...'
+        ls -la ~/.env
+        
+        # 파일 권한 설정 (선택사항)
+        chmod 600 ~/.env  # 보안 강화
+
+        echo 'Starting backend deployment...'
+        
+        # Docker 로그인
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+        echo 'Pulling latest image...'
+        docker pull eoslovy/talktalkcare-backend:latest
+        
+        # 순차적으로 컨테이너 정리 (중지 후 삭제)
+        echo 'Stopping containers one by one...'
+        docker stop -t 10 openvidu || true
+        docker stop -t 10 kurento || true
+        docker stop -t 10 coturn || true
+        docker stop -t 10 backend || true
+        docker stop -t 10 redis || true
+        docker stop -t 10 mysql || true
+        docker stop -t 10 nginx || true
+
+        echo 'Removing containers...'
+        docker rm -f openvidu || true
+        docker rm -f kurento || true
+        docker rm -f coturn || true
+        docker rm -f backend || true
+        docker rm -f redis || true
+        docker rm -f mysql || true
+        docker rm -f nginx || true
+        
+        # 네트워크 정리 후 재생성
+        echo 'Recreating network...'
+        docker network rm cicd_network || true
+        docker network create cicd_network
+        
+        # MySQL 실행
+        echo 'Deploying MySQL...'
+        docker-compose up -d mysql
+        echo 'Waiting for MySQL to start...'
+        sleep 30  # MySQL 안정화 대기
+
+        # Redis 실행
+        echo 'Deploying Redis...'
+        docker-compose up -d redis
+
+        # Kurento 실행
+        echo 'Deploying Kurento...'
+        docker-compose up -d kurento
+
+        # Coturn 실행
+        echo 'Deploying Coturn...'
+        docker-compose up -d coturn
+        
+        # OpenVidu 실행 후 안정화
+        echo 'Deploying OpenVidu...'
+        docker-compose up -d openvidu
+        echo 'Waiting for OpenVidu to stabilize...'
+        sleep 60  # OpenVidu 안정화 대기
+
+        # Backend 실행
+        echo 'Deploying Backend...'
+        docker-compose up -d backend
+
+        echo 'Deployment completed successfully!'
+      "
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+      changes:
+        - backend/**
+        - .gitlab-ci.yml
+      when: always
+  variables:
+    DOCKER_PRIVILEGED: "true"
+
+deploy-frontend:
+  stage: deploy
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | base64 -d | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  script:
+    - scp docker-compose.yml frontend/nginx.conf $SSH_USER@$SSH_HOST:~/
+    - |
+      ssh $SSH_USER@$SSH_HOST "
+        echo 'Starting frontend deployment...'
+
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+        echo 'Pulling latest image...'
+        docker pull eoslovy/talktalkcare-nginx:latest
+
+        echo 'Stopping old Nginx container...'
+        docker stop nginx || true
+        docker rm -f nginx || true
+
+        echo 'Deploying Nginx...'
+        docker-compose up -d nginx
+
+        echo 'Checking deployment status...'
+        docker ps | grep nginx
+
+        echo 'Frontend Deployment Completed!'
+      "
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+      changes:
+        - frontend/**
+        - nginx.conf
+        - .gitlab-ci.yml
+      when: always
+  variables:
+    DOCKER_PRIVILEGED: "true"

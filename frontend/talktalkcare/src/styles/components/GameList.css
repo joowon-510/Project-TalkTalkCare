@@ -1,0 +1,257 @@
+.game-list-container {
+  padding: 2rem;
+  margin: auto;
+  margin-top: 30px;
+  background-color: #F5FFEA;
+  border-radius: 1rem;
+  height: auto;
+  min-width: 720px;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.games-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.game-header {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: #c8e6c9;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 10px 0px;
+  width: 100%;
+}
+
+/* 🔹 필터 버튼 스타일 */
+.skills-filter {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.skill-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  height: 50px;
+  border: none;
+  font-size: 22px;
+  background-color: #f5ffea;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.skill-button.active {
+  background-color: #a6c7a7;
+  color: white;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 🔹 게임 카드 */
+.game-card {
+  display: flex;
+  flex-direction: row; /* ✅ 가로 정렬 */
+  align-items: center;
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  gap: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%; /* ✅ 게임 카드 너비를 충분히 확보 */
+}
+
+.game-card:hover {
+  transform: translateY(-10px);
+  background-color: #f5ffea;
+}
+
+/* 🔹 아이콘과 게임 이름 */
+.game-icon-container {
+  width: 100px; /* ✅ 고정된 크기 */
+  height: 100px; /* ✅ 고정된 크기 */
+  flex-shrink: 0; /* ✅ 크기가 줄어들지 않도록 설정 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-icon {
+  width: 80px; /* ✅ 고정된 크기 */
+  height: 80px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.game-name {
+  width: 120px; /* ✅ 충분한 너비 확보 */
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap; /* ✅ 한 줄 유지 */
+  overflow: visible; /* ✅ 글자가 잘리지 않도록 설정 */
+}
+
+/* 🔹 게임 설명 */
+.game-info {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  justify-content: space-between;
+  white-space: nowrap; /* ✅ 한 줄 유지 */
+  overflow: visible; /* ✅ 글자가 잘리지 않도록 설정 */
+}
+
+.game-info-box {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  justify-content: space-between;
+  white-space: nowrap; /* ✅ 한 줄 유지 */
+  overflow: visible; /* ✅ 글자가 잘리지 않도록 설정 */
+  width: 100%;
+  background-color: #c8e6c9;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.score {
+  padding: 10px 20px;
+  font-size: xx-large;
+  font: bold;
+  
+}
+
+.game-level {
+  padding: 10px 20px;
+}
+
+.ok-button {
+  background-color: #f5ffea;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+.ok-button:hover {
+  background-color: #c8e6c9;
+}
+
+
+.game-box {
+  margin: 20px 0px;
+}
+
+/* 🔹 게임 컴포넌트 */
+.game-component {
+  margin-top: 10px;
+}
+
+/* 🔹 콘텐츠 전체 스타일 */
+.game-content-wrapper {
+  background-color: #c8e6c9;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 필터 스타일 */
+.skills-filter {
+  background-color: transparent;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+/* 🔹 game-card 배경색 조정 */
+.game-card {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.back-button {
+  font-size: 30px; /* 텍스트 크기 */
+  padding-bottom: 10px;
+  border: none; /* 기본 테두리 없애기 */
+  cursor: pointer; /* 마우스 커서가 손 모양으로 바뀌게 */
+  }
+
+.back-button:hover {
+  color: #1f5720;
+}
+
+.back-button:focus {
+  outline: none; /* 포커스 시 외곽선 없애기 */
+}
+
+.game-description {
+  background-color: #a6c7a7;
+}
+
+.small-title {
+  display: flex;
+  align-items: center;
+  justify-content: baseline;
+  padding-top: 10px;
+}
+
+.middle-title {
+  font-size: 34px;
+  background-color: #c8e6c9;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0px;
+  font: bold;
+}
+
+.message {
+  margin: 10px 0px 20px;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.message.correct {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+.message.wrong {
+  background-color: #ffcdd2;
+  color: #c62828;
+}

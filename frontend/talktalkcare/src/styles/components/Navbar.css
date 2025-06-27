@@ -1,0 +1,90 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(186, 100, 100, 0.1);
+  z-index: 2000;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: transform 0.3s ease;
+  width: 100%; /* 가로 크기 100%로 설정 */
+  height: 60px;
+  padding: 0 20px;
+}
+
+.navbar-middle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 70px; 
+  padding: 0px 200px;
+  overflow: hidden;    /* 텍스트가 넘칠 경우 숨김 */
+  z-index: 2000;
+}
+
+.login-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.navbar-link {
+  text-decoration: none;
+  border-radius: 10px;
+  display: flex; /* flexbox로 설정 */
+  flex-direction: row; /* 텍스트가 이미지의 왼쪽에 오도록 설정 */
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+  padding: 10px;
+  width: max-content; /* 내용물 크기에 맞춰 자동 조정 */
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.navbar-link:hover {
+  background-color: #c8e6c9;
+  cursor: pointer;
+}
+
+.text-md {
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.navbar-menu-text {
+  font-size: 20px;
+}
+
+.navbar-menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon {
+  width: 24px;
+  height: auto;
+}
+
+.logo-image {
+  margin-left: 0; /* 기본적으로 margin-left 0으로 설정 */
+  transition: transform 0.3s ease;
+}
+
+.logo-image:hover, .navbar-left:hover {
+  transform: scale(1.1);
+}
+
+.navbar-title {
+  white-space: nowrap;
+}

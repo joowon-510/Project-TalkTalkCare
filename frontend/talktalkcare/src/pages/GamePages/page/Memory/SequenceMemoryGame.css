@@ -1,0 +1,43 @@
+.sequence-memory-game {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 400px;
+  margin: 30px auto;
+}
+
+.color-button {
+  width: 150px;
+  height: 150px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.color-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.color-button:active:not(:disabled),
+.color-button.active {
+  transform: scale(0.95);
+  filter: brightness(1.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
+  .color-button {
+    width: 120px;
+    height: 120px;
+  }
+} 

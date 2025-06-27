@@ -1,0 +1,133 @@
+.friend-list-container {
+  position: fixed;
+  width: 21rem;
+  height: 100%;
+  position: fixed;
+  right: 0;
+  top: 0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  background-color: white;
+  padding-top: 80px;
+  z-index: 1000;
+  overflow: hidden;
+  margin-right: 200px;
+}
+
+.friend-list-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.friend-list-back-button {
+  padding: 0.5rem;
+  border-radius: 9999px;
+}
+
+.friend-list-back-button:hover {
+  background-color: #f3f4f6;
+}
+
+.friend-list-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: #c8e6c9;
+  border-radius: 20px;
+  height: 70px;
+  margin: 0px 5px 15px;
+}
+
+.friend-list-add-button {
+  padding: 0.5rem;
+  border-radius: 9999px;
+}
+
+.friend-list-add-button:hover {
+  background-color: #f3f4f6;
+}
+
+.friend-list-search-container {
+  margin-bottom: 1rem;
+}
+
+.friend-list-search-input {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+}
+
+.friend-list-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  height: calc(100vh - 140px);
+  max-height: calc(100vh - 140px); /* 부모 요소 안에서만 스크롤되도록 설정 */
+}
+
+.loading-message, 
+.error-message, 
+.empty-message {
+  text-align: center;
+  padding: 1rem;
+}
+
+.loading-message {
+  color: #6b7280;
+}
+
+.error-message {
+  color: #ef4444;
+}
+
+.empty-message {
+  color: #6b7280;
+}
+
+.profile-image-container {
+  width: 40px; /* 원하는 원의 너비 */
+  height: 40px; /* 원하는 원의 높이 */
+  position: relative;
+  margin-right: 0.5rem;
+}
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: auto;
+}
+
+.status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background-color: green; /* 온라인 상태를 나타내는 색상 */
+  border: 1px solid white;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-name {
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.profile-status {
+  font-size: 0.8rem;
+  color: #888;
+}

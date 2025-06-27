@@ -1,0 +1,78 @@
+.test-container {
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.test-page {
+  background-color: #e0f7c8;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.title-section {
+  display: flex; /* 플렉스 박스 활성화 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  background-color: #c8e6c9;
+  border-radius: 25px; /* 모서리 둥글기 증가 */
+  height: 80px; /* 높이를 명시적으로 설정 */
+  font-size: 2.0em; /* 글자 크기 증가 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 60px;  /* 버튼 사이 간격 증가 */
+  width: 100%;
+  max-width: 1200px;  /* 최대 너비 증가 */
+  margin-top: 50px;
+}
+
+.test-button {
+  background-color: #f5ffea;
+  border-radius: 25px;
+  width: 300px;  /* 너비 증가 */
+  height: 180px;  /* 높이 설정 */
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #214005;
+  text-align: center;
+  font-size: 1.8em;  /* 글자 크기 증가 */
+  line-height: 1.0;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+/* ✅ 버튼 hover 효과 */
+.test-button:hover {
+background-color: #c8e6c9;
+color: white;
+box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3);
+transform: scale(1.05);
+}
+
+/* ✅ 반응형 처리 */
+@media (max-width: 768px) {
+.buttons-container {
+    flex-direction: column;
+    gap: 20px;
+}
+
+.test-option {
+    width: 100%;
+    max-width: 350px;
+}
+}

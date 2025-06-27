@@ -1,0 +1,192 @@
+networks:
+  cicd_network:
+    driver: bridge
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      retries: 3
+      timeout: 5s
+    networks:
+      - cicd_network
+    restart: on-failure:3
+
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - cicd_network
+    restart: on-failure:3
+
+  # Kurento Media Server
+  kurento:
+    image: kurento/kurento-media-server:6.18.0
+    container_name: kurento
+    ports:
+      - "8888:8888"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    environment:
+      - KURENTO_CERTIFICATE_FILE=/etc/letsencrypt/live/talktalkcare.com/fullchain.pem
+      - KURENTO_KEY_FILE=/etc/letsencrypt/live/talktalkcare.com/privkey.pem
+      - KMS_STUN_IP=${KMS_STUN_IP}
+      - KMS_STUN_PORT=${KMS_STUN_PORT}
+      - KMS_TURN_URL=${KMS_TURN_URL}
+      - KMS_NETWORK_INTERFACES=eth0
+      - KMS_ICE_TCP=1
+      - KMS_MIN_PORT=40000
+      - KMS_MAX_PORT=40400
+      - GST_DEBUG=2,Kurento*:4,kms*:4,sdp*:4,webrtc*:4,*rtpendpoint:4,rtp*handler:4,rtpsynchronizer:4,agnosticbin:4
+    networks:
+      - cicd_network
+    restart: on-failure:3
+
+  # Coturn (TURN Server)
+  coturn:
+    image: instrumentisto/coturn
+    container_name: coturn
+    ports:
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    environment:
+      - REALM=talktalkcare.com
+      - USER=turnuser:turnpassword
+      - CERT_FILE=/etc/letsencrypt/live/talktalkcare.com/fullchain.pem
+      - KEY_FILE=/etc/letsencrypt/live/talktalkcare.com/privkey.pem
+    networks:
+      - cicd_network
+    restart: on-failure:3
+
+  openvidu:
+    image: openvidu/openvidu-server:2.29.0
+    container_name: openvidu
+    environment:
+      - DOMAIN_OR_PUBLIC_IP=${DOMAIN_OR_PUBLIC_IP}
+      - OPENVIDU_URL=${OPENVIDU_URL}
+      - OPENVIDU_SECRET=${OPENVIDU_SECRET}
+      - CERTIFICATE_TYPE=${CERTIFICATE_TYPE}
+      - HTTPS_PORT=${HTTPS_PORT}
+      - KMS_URIS=${KMS_URIS}
+      - OPENVIDU_STREAMS_VIDEO_MAX_RECV_BANDWIDTH=2000
+      - OPENVIDU_STREAMS_VIDEO_MIN_RECV_BANDWIDTH=500
+      - OPENVIDU_STREAMS_VIDEO_MAX_SEND_BANDWIDTH=2000
+      - OPENVIDU_STREAMS_VIDEO_MIN_SEND_BANDWIDTH=500
+    ports:
+      # - "443:443"
+      - "40000-40400:40000-40400/tcp"
+      - "40000-40400:40000-40400/udp"
+    volumes:
+      - ./openvidu_data:/opt/openvidu/recordings
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    networks:
+      - cicd_network
+    restart: on-failure:3
+
+  backend:
+    build: ./backend
+    image: eoslovy/talktalkcare-backend:latest
+    container_name: backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_APPLICATION_NAME=${SPRING_APPLICATION_NAME}
+      - DB_DRIVER=${DB_DRIVER}
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JPA_SHOW_SQL=${JPA_SHOW_SQL}
+      - JPA_DDL_AUTO=${JPA_DDL_AUTO}
+      - JPA_FORMAT_SQL=${JPA_FORMAT_SQL}
+      - JPA_DIALECT=${JPA_DIALECT}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - LOG_LEVEL_SQL=${LOG_LEVEL_SQL}
+      - LOG_LEVEL_TYPE=${LOG_LEVEL_TYPE}
+      # OpenVidu 설정
+      - DOMAIN_OR_PUBLIC_IP=${DOMAIN_OR_PUBLIC_IP}
+      - OPENVIDU_URL=${OPENVIDU_URL}
+      - OPENVIDU_SECRET=${OPENVIDU_SECRET}
+      - CERTIFICATE_TYPE=${CERTIFICATE_TYPE}
+      - HTTPS_PORT=${HTTPS_PORT}
+      - KMS_URIS=${KMS_URIS}
+      
+      - OPENAI_API_URL=${OPENAI_API_URL}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - SMS_API_KEY=${SMS_API_KEY}
+      - SMS_API_SECRET=${SMS_API_SECRET}
+      - SMS_SENDER=${SMS_SENDER}
+      - CONTEXT_PATH=${CONTEXT_PATH}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+      - VITE_API_WS_URL=${VITE_API_WS_URL}
+      - VITE_AWS_ACCESS_KEY_ID=${VITE_AWS_ACCESS_KEY_ID}
+      - VITE_AWS_SECRET_ACCESS_KEY=${VITE_AWS_SECRET_ACCESS_KEY}
+      - VITE_AWS_REGION=${VITE_AWS_REGION}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+      redis:
+        condition: service_started
+      openvidu:
+        condition: service_started
+    networks:
+      - cicd_network
+    restart: on-failure:3
+
+  nginx:
+    image: eoslovy/talktalkcare-nginx:latest
+    container_name: nginx
+    build:
+      context: .
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+        - VITE_API_WS_URL=${VITE_API_WS_URL}
+        - VITE_AWS_ACCESS_KEY_ID=${VITE_AWS_ACCESS_KEY_ID}
+        - VITE_AWS_SECRET_ACCESS_KEY=${VITE_AWS_SECRET_ACCESS_KEY}
+        - VITE_AWS_REGION=${VITE_AWS_REGION}
+    environment:
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+      - VITE_API_WS_URL=${VITE_API_WS_URL}
+      - VITE_AWS_ACCESS_KEY_ID=${VITE_AWS_ACCESS_KEY_ID}
+      - VITE_AWS_SECRET_ACCESS_KEY=${VITE_AWS_SECRET_ACCESS_KEY}
+      - VITE_AWS_REGION=${VITE_AWS_REGION}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - backend
+    networks:
+      - cicd_network
+    restart: on-failure:3

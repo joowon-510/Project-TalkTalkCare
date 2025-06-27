@@ -1,0 +1,76 @@
+/* Footerbar.css */
+.footer {
+  position: sticky;
+  background-color: #F5FFEA;
+  padding: 1rem 0;
+  width: 100%;
+  margin-top:20px;
+  z-index: 2000;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem; /* 간격 줄임 */
+}
+
+.footer-nav a {
+  color: #666;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.8rem; /* 크기 줄임 */
+}
+
+.footer-nav a:hover {
+  text-decoration: underline;
+}
+
+.footer-info {
+  display: flex;
+  justify-content: space-between; /* 내용 분리 */
+  align-items: flex-start;  /* 상단 정렬 */
+  color: #666;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem; /* 간격 줄임 */
+}
+
+.footer-info .company-info {
+  text-align: left;
+}
+
+.footer-info .company-info p { /* company-info 내부의 <p>태그에 적용 */
+  margin: 0.2rem 0; /* 간격 줄임 */
+}
+
+.footer-info .contact-info {
+  text-align: right; /* 오른쪽 정렬 */
+}
+
+.footer-info .company-info .email {
+  font-size: 0.8rem; /* 다른 텍스트와 같은 크기로 설정 */
+  font-weight: 500; /* 다른 텍스트와 같은 굵기로 설정 */
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid #ddd;
+  color: #666;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.footer-bottom .company {
+  text-align: right; /* Ping's corp. 오른쪽 정렬 */
+}

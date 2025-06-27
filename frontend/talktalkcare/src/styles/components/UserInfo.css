@@ -1,0 +1,122 @@
+.page-container {
+ width: auto;
+ height: auto;
+}
+
+.user-info-container {
+  width: 600px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 3rem;
+  background-color: #F5FFEA;
+  height: 700px;
+  border-radius: 20px;
+  text-align: center; /* 전체 텍스트 가운데 정렬 */
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.info-card {
+  background-color: #B6F3AA;
+  padding: 2rem;
+  border-radius: 15px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: left; /* 전체 텍스트 왼쪽 정렬 */
+  height: 470px;
+}
+
+.info-rows {
+  line-height: 18px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: flex-start; /* 수평으로 왼쪽 정렬 */
+  align-items: center; /* 수직 정렬 */
+  margin-bottom: 1.5rem; /* 행 간격을 조금 더 넓게 */
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-right: 1rem; /* 라벨과 값 사이 간격 */
+  text-align: left; /* 라벨은 왼쪽 정렬 */
+}
+
+.info-value {
+  font-size: 1.5rem;
+  flex: 1;
+  text-align: left; /* 값도 왼쪽 정렬 */
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-button {
+  background-color: #107303 !important;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease; 
+}
+
+.edit-button:hover {
+  background-color: #43ff4d !important;
+  color: #000;
+}
+
+/* 회원 탈퇴 버튼 스타일 (배경 제거 + 오른쪽 정렬) */
+.signout-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding-right: 2rem;
+}
+
+.signout-button {
+  background: none;
+  border: none;
+  color: #dab7b6;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.signout-button:hover {
+  color: #5e4746;
+  text-decoration: underline;
+}

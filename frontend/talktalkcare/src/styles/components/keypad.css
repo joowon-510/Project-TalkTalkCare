@@ -1,0 +1,150 @@
+/* 페이지 컨테이너의 전체적인 스타일 설정 */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  background-color: white;
+  padding-top: 50px;
+  align-items: center;  /* 텍스트와 키패드가 세로로 중앙 정렬되도록 */
+  justify-content: center;
+}
+
+.page-section {
+  background-color: #c8e6c9;
+  padding: 30px 50px;
+  border-radius: 20px;
+}
+
+.text-section {
+  background-color: #e8ffe0;
+  border-radius: 20px;
+  width: 460px;  /* 왼쪽 영역 너비 */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;  /* 오른쪽 영역 너비 */
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+.shift-left {
+  margin-right: 250px; /* 원하는 만큼 조정 */
+  transition: margin-right 0.3s ease-in-out;
+}
+
+.input-display-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #e8ffe0;
+  width: 450px;
+  height: 60px;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-display {
+  font-size: 40px;
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+.clear-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #214005;
+}
+
+.bottom-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 450px;
+}
+
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  background-color: #e8ffe0;
+  padding: 15px;
+  border-radius: 15px;
+  width: 320px;
+  height: 410px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.keypad-button {
+  width: 90px;
+  height: 90px;
+  font-size: 45px;
+  font-weight: bold;
+  background-color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.keypad-button:hover {
+  background-color: #b3e59f;
+}
+
+.phone-icon, .contacts-icon {
+  width: 40px;
+  height: 45px;
+}
+
+.side-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+}
+
+.call-button, .contacts-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 200px;
+  background-color: #e8ffe0;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.call-button:hover, .contacts-button:hover {
+  background-color: #b3e59f;
+}
+
+.phone-icon, .contacts-icon {
+  font-size: 30px;
+  margin-bottom: 5px;
+  color: #214005;
+}
+
+.call-title {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 30px;
+  padding-bottom: 10px;
+}
+
+.clear-button {
+  font: bold;
+}
